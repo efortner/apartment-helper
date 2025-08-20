@@ -1,0 +1,47 @@
+{
+  "name": "apartment-helper",
+  "version": "0.1.0",
+  "description": "Helps me find an apartment.",
+  "homepage": "https://github.com/efortner/apartment-helper#readme",
+  "bugs": {
+    "url": "https://github.com/efortner/apartment-helper/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efortner/apartment-helper.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "prepare": "husky",
+    "clean": "rm -rf dist node_modules coverage",
+    "lint": "eslint . && prettier --check .",
+    "format": "eslint . --fix && prettier --write .",
+    "build": "npm run lint && npm run bundle",
+    "release": "npm ci && npm run build && npm run test",
+    "bundle": "tsc --noEmit && esbuild src/index.ts --outfile=dist/index.js --platform=node --bundle --target=node22 --format=esm --minify"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@types/jest": "^30.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.40.0",
+    "@typescript-eslint/parser": "^8.40.0",
+    "esbuild": "^0.25.9",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "jest": "^30.0.5",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.40.0"
+  }
+}
