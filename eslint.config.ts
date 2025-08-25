@@ -1,13 +1,18 @@
-import tseslint from "typescript-eslint";
-import globals from "globals";
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ["**/coverage/", "**/dist/", "node_modules/", "**/*.guard.ts"],
+    ignores: [
+      '**/coverage/',
+      '**/dist/',
+      'node_modules/',
+      'src/types/*.guard.ts',
+      'src/index.ts',
+      '**/data/',
+    ],
   },
   {
-    files: ["**/*.{ts}"],
-    languageOptions: { globals: globals.browser },
+    files: ['**/*.{ts}'],
   },
   ...tseslint.configs.recommended,
 );

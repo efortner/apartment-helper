@@ -12,17 +12,18 @@
   },
   "license": "MIT",
   "author": "",
-  "type": "module",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "prepare": "husky",
-    "clean": "rm -rf dist node_modules coverage",
+    "clean": "rm -rf dist node_modules coverage src/**/*.guard.ts",
     "lint": "eslint . && prettier --check .",
     "format": "eslint . --fix && prettier --write .",
-    "build": "npm run lint && npm run bundle",
+    "build:guards": "ts-auto-guard src/types/*.ts",
+    "build": "npm run lint && npm run build:guards && npm run bundle",
     "release": "npm ci && npm run build && npm run test",
-    "bundle": "tsc --noEmit && esbuild src/index.ts --outfile=dist/index.js --platform=node --bundle --target=node22 --format=esm --minify"
+    "bundle": "tsc --noEmit && esbuild src/index.ts --outfile=dist/index.js --platform=node --bundle --target=node22 --format=cjs --external:fs --minify"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -35,13 +36,17 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
-    "globals": "^16.3.0",
     "husky": "^9.1.7",
     "jest": "^30.0.5",
     "prettier": "^3.6.2",
+    "ts-auto-guard": "^5.0.1",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.40.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "streeteasy-api": "^0.1.11"
   }
 }
