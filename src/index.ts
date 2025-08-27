@@ -9,6 +9,7 @@ import {
 import { LocalApartmentCache } from './adapters/local-apartment-cache';
 import { SaveApartmentCache } from './adapters/save-apartment-cache';
 import { FallbackApartmentAdapter } from './adapters/fallback-apartment-adapter';
+import { SaveApartmentScanner } from './adapters/save-apartment-scanner';
 
 (async () => {
   const streetEasyAdapter = new StreetEasyAdapter({
@@ -18,21 +19,26 @@ import { FallbackApartmentAdapter } from './adapters/fallback-apartment-adapter'
   const saveApartmentCache = new SaveApartmentCache({
     directory: './data',
   });
+  const saveApartmentScanner = new SaveApartmentScanner({
+    directory: './data',
+    saveApartmentCache,
+  });
   const fallbackApartmentAdapter = new FallbackApartmentAdapter({
     fetchChain: [localApartmentCache, saveApartmentCache, streetEasyAdapter],
     putChain: [localApartmentCache, saveApartmentCache],
     searchChain: [streetEasyAdapter],
   });
-  const result = await fallbackApartmentAdapter.search({
+  const priorListings = await saveApartmentScanner.scan();
+  const currentListings = await fallbackApartmentAdapter.search({
     maxPrice: getNumberFromEnvironment('MAX_PRICE'),
     mustAllowPets: getBooleanFromEnvironment('MUST_ALLOW_PETS'),
     minimumBedrooms: getNumberFromEnvironment('MINIMUM_BEDROOMS'),
     minimumBathrooms: getNumberFromEnvironment('MINIMUM_FULL_BATHROOMS'),
     neighborhoods: getNeighborhoodListFromEnvironment('NEIGHBORHOODS'),
   });
-  console.info(JSON.stringify(result, null, 2));
-  const otherResult = await Promise.all(
-    result.map((apartment) => fallbackApartmentAdapter.put(apartment)),
+  const priorApartmentIds = new Set(priorListings.map((listing) => listing.id));
+  const newListings = currentListings.filter(
+    (listing) => !priorApartmentIds.has(listing.id),
   );
-  console.info(JSON.stringify(otherResult, null, 2));
+  console.info(JSON.stringify(newListings, null, 2));
 })();

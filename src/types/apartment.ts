@@ -12,6 +12,10 @@ export interface ApartmentPut {
   readonly put: (apartment: Apartment) => Promise<Apartment>;
 }
 
+export interface ApartmentScan {
+  readonly scan: () => Promise<Apartment[]>;
+}
+
 export interface SearchProps {
   readonly maxPrice: number;
   readonly mustAllowPets: boolean;
