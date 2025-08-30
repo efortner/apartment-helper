@@ -16,6 +16,7 @@ describe('LocalApartmentCache', () => {
     const now = new Date();
     const apartment: Apartment = {
       id: 'apt-123',
+      status: 'ACTIVE',
       price: 3000,
       bedrooms: 2,
       bathrooms: 1,
@@ -41,6 +42,7 @@ describe('LocalApartmentCache', () => {
     const now = new Date();
     const apartment: Apartment = {
       id: 'apt-456',
+      status: 'ACTIVE',
       price: 2500,
       bedrooms: 1,
       bathrooms: 1,

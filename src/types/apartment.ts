@@ -26,6 +26,7 @@ export interface SearchProps {
 
 export interface Apartment {
   readonly id: string;
+  readonly status: 'ACTIVE' | 'RENTED' | 'NO_LONGER_AVAILABLE' | 'DELISTED';
   readonly price: number;
   readonly bedrooms: number;
   readonly bathrooms: number;

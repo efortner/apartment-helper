@@ -11,6 +11,7 @@ describe('FallbackApartmentAdapter', () => {
   const apartment: Apartment = {
     bathrooms: 0,
     bedrooms: 0,
+    status: 'ACTIVE',
     createdAt: currentDate,
     features: [],
     halfBathrooms: 0,
