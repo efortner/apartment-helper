@@ -21,7 +21,7 @@ import { SaveApartmentScanner } from './adapters/save-apartment-scanner';
   });
   const saveApartmentScanner = new SaveApartmentScanner({
     directory: './data',
-    saveApartmentCache,
+    apartmentFetcher: saveApartmentCache,
   });
   const fallbackApartmentAdapter = new FallbackApartmentAdapter({
     fetchChain: [localApartmentCache, saveApartmentCache, streetEasyAdapter],

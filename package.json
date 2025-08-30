@@ -17,13 +17,16 @@
   "scripts": {
     "test": "jest",
     "prepare": "husky",
-    "clean": "rm -rf dist node_modules coverage src/**/*.guard.ts",
+    "clean": "rm -rf dist node_modules coverage src/**/*.guard.ts data/*.json",
     "lint": "eslint . && prettier --check .",
     "format": "eslint . --fix && prettier --write .",
     "build:guards": "ts-auto-guard src/types/*.ts",
-    "build": "npm run lint && npm run build:guards && npm run bundle",
+    "build:install": "node bin/install-mcp.mjs",
+    "build": "npm run lint && npm run build:guards && npm run bundle:index && npm run bundle:mcp && npm run build:install",
     "release": "npm ci && npm run build && npm run test",
-    "bundle": "tsc --noEmit && esbuild src/index.ts --outfile=dist/index.js --platform=node --bundle --target=node22 --format=cjs --external:fs --minify"
+    "start": "node dist/index.js",
+    "bundle:index": "tsc --noEmit && esbuild src/index.ts --outfile=dist/index.js --platform=node --bundle --target=node22 --format=cjs --external:fs --minify",
+    "bundle:mcp": "tsc --noEmit && esbuild src/mcp/server.ts --outfile=dist/mcp.js --platform=node --bundle --target=node22 --format=cjs --external:fs --minify"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -46,7 +49,9 @@
     "typescript-eslint": "^8.40.0"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.4",
     "dotenv": "^17.2.1",
-    "streeteasy-api": "^0.1.11"
+    "streeteasy-api": "^0.1.11",
+    "zod": "^3.25.76"
   }
 }

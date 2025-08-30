@@ -3,7 +3,7 @@ import * as fs from 'node:fs';
 
 export interface SaveApartmentScannerProps {
   readonly directory: string;
-  readonly saveApartmentCache: ApartmentFetch;
+  readonly apartmentFetcher: ApartmentFetch;
 }
 
 export class SaveApartmentScanner implements ApartmentScan {
@@ -15,6 +15,6 @@ export class SaveApartmentScanner implements ApartmentScan {
         .readdirSync(this.props.directory)
         .filter((file) => file.endsWith('.json'))
         .map((fileName) => fileName.split('.')[0]!)
-        .map((apartmentId) => this.props.saveApartmentCache.fetch(apartmentId)),
+        .map((apartmentId) => this.props.apartmentFetcher.fetch(apartmentId)),
     );
 }

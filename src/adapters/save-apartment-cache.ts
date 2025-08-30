@@ -28,6 +28,7 @@ export class SaveApartmentCache implements ApartmentFetch, ApartmentPut {
         unitType: content.unitType,
         updatedAt: new Date(content.updatedAt),
         url: content.url,
+        status: content.status,
       };
     }
     throw new Error(`Invalid apartment content: ${filePath}`);

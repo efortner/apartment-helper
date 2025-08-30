@@ -10,9 +10,9 @@ export default {
   coveragePathIgnorePatterns: [
     '/node_modules/',
     '/dist/',
-    '/src/errors/',
     'index.ts',
     '\\.guard\\.ts$',
+    '/src/mcp/',
   ],
   coverageThreshold: {
     global: {

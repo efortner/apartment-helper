@@ -11,7 +11,7 @@ describe('SaveApartmentScanner', () => {
   const mockFetch = jest.fn();
   const scannerProps = {
     directory: '/mocked/directory',
-    saveApartmentCache: { fetch: mockFetch } as unknown as ApartmentFetch,
+    apartmentFetcher: { fetch: mockFetch } as unknown as ApartmentFetch,
   };
   const scanner = new SaveApartmentScanner(scannerProps);
   const currentDate = new Date();
@@ -29,6 +29,7 @@ describe('SaveApartmentScanner', () => {
 
     const apartmentA: Apartment = {
       createdAt: currentDate,
+      status: 'ACTIVE',
       features: ['WASHER_DRYER'],
       noFee: false,
       unit: 'B',
@@ -45,6 +46,7 @@ describe('SaveApartmentScanner', () => {
 
     const apartmentB: Apartment = {
       createdAt: currentDate,
+      status: 'ACTIVE',
       features: ['WASHER_DRYER'],
       noFee: false,
       unit: 'A',
