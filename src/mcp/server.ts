@@ -5,9 +5,8 @@ import { StreetEasyAdapter } from '../adapters/street-easy-adapter';
 import { StreetEasyClient } from 'streeteasy-api';
 import { LocalApartmentCache } from '../adapters/local-apartment-cache';
 import { SaveApartmentCache } from '../adapters/save-apartment-cache';
-import { SaveApartmentScanner } from '../adapters/save-apartment-scanner';
 import { FallbackApartmentAdapter } from '../adapters/fallback-apartment-adapter';
-import { z } from 'zod';
+import { z } from 'zod/v3';
 import { getEnvironmentVariable } from '../utilities/environment';
 
 const server = new McpServer({
@@ -22,14 +21,6 @@ const streetEasyAdapter = new StreetEasyAdapter({
 const localApartmentCache = new LocalApartmentCache();
 const saveApartmentCache = new SaveApartmentCache({
   directory: dataDirectory,
-});
-const apartmentRefresher = new SaveApartmentScanner({
-  directory: dataDirectory,
-  apartmentFetcher: new FallbackApartmentAdapter({
-    fetchChain: [streetEasyAdapter],
-    putChain: [localApartmentCache, saveApartmentCache],
-    searchChain: [streetEasyAdapter],
-  }),
 });
 const fallbackApartmentAdapter = new FallbackApartmentAdapter({
   fetchChain: [localApartmentCache, saveApartmentCache, streetEasyAdapter],
@@ -52,35 +43,6 @@ server.registerTool(
   },
   async () => ({
     content: [{ type: 'text', text: JSON.stringify(Neighborhoods) }],
-  }),
-);
-
-server.registerTool(
-  'refresh',
-  {
-    title: 'Refresh',
-    description:
-      'Refreshes all listings that have been downloaded locally with updates from StreetEasy. This does not search for any new listings. Only previously known listings are updated. Active listings are returned.',
-    annotations: {
-      destructiveHint: false,
-      idempotentHint: true,
-      readOnlyHint: false,
-      openWorldHint: false,
-    },
-  },
-  async () => ({
-    content: [
-      {
-        type: 'text',
-        text: JSON.stringify(
-          await apartmentRefresher
-            .scan()
-            .then((results) =>
-              results.filter((result) => result.status === 'ACTIVE'),
-            ),
-        ),
-      },
-    ],
   }),
 );
 
