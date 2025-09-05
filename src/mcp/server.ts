@@ -1,4 +1,7 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import {
+  McpServer,
+  ResourceTemplate,
+} from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { NeighborhoodCode, Neighborhoods } from '../types/neighborhoods';
 import { StreetEasyAdapter } from '../adapters/street-easy-adapter';
@@ -8,11 +11,20 @@ import { SaveApartmentCache } from '../adapters/save-apartment-cache';
 import { FallbackApartmentAdapter } from '../adapters/fallback-apartment-adapter';
 import { z } from 'zod/v3';
 import { getEnvironmentVariable } from '../utilities/environment';
+import { isNeighborhoodName } from '../types/neighborhoods.guard';
 
-const server = new McpServer({
-  version: '0.1.0',
-  name: 'apartment-helper',
-});
+const server = new McpServer(
+  {
+    version: '0.1.0',
+    name: 'apartment-helper',
+  },
+  {
+    capabilities: {
+      resources: {},
+      tools: {},
+    },
+  },
+);
 
 const dataDirectory = getEnvironmentVariable('DATA_DIRECTORY');
 const streetEasyAdapter = new StreetEasyAdapter({
@@ -27,6 +39,35 @@ const fallbackApartmentAdapter = new FallbackApartmentAdapter({
   putChain: [localApartmentCache, saveApartmentCache],
   searchChain: [streetEasyAdapter],
 });
+
+server.registerResource(
+  'neighborhood-codes',
+  new ResourceTemplate('neighborhoods://{neighborhood}', {
+    list: () => ({
+      resources: Object.keys(Neighborhoods).map((name) => ({
+        name,
+        uri: `neighborhoods://${name}`,
+        title: `${name} Code`,
+        mimeType: 'text/plain',
+      })),
+    }),
+  }),
+  {
+    title: 'Neighborhood Codes',
+    description: 'Numerical codes used for neighborhood filtering.',
+  },
+  (uri, { neighborhood }) => ({
+    contents: [
+      {
+        mimeType: 'text/plain',
+        uri: uri.href,
+        text: isNeighborhoodName(neighborhood)
+          ? String(Neighborhoods[neighborhood])
+          : 'NOT FOUND',
+      },
+    ],
+  }),
+);
 
 server.registerTool(
   'list-neighborhoods',
