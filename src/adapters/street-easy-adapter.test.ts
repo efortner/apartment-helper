@@ -71,7 +71,6 @@ jest.mock('streeteasy-api', () => {
             bedroomCount: 3,
             fullBathroomCount: 2,
             halfBathroomCount: 0,
-            features: { list: ['Pool'] },
             address: {},
           },
           createdAt: '2022-01-01T00:00:00Z',
@@ -174,7 +173,7 @@ describe('StreetEasyAdapter', () => {
       streetAddress: 'Other St',
       unit: '',
       unitType: 'Coop',
-      features: ['Pool'],
+      features: [],
     });
   });
 });
