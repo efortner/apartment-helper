@@ -1,5 +1,6 @@
 import { Areas } from 'streeteasy-api/dist/constants';
 
 export const Neighborhoods = Areas;
-export type NeighborhoodCode =
-  (typeof Neighborhoods)[keyof typeof Neighborhoods];
+/** @see {isNeighborhoodName} ts-auto-guard:type-guard */
+export type NeighborhoodName = keyof typeof Neighborhoods;
+export type NeighborhoodCode = (typeof Neighborhoods)[NeighborhoodName];
