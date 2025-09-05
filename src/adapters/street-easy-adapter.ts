@@ -61,8 +61,9 @@ export class StreetEasyAdapter implements ApartmentSearch, ApartmentFetch {
           (response) =>
             ({
               ...result,
-              features:
-                response.rentalByListingId.propertyDetails.features.list,
+              features: response.rentalByListingId.propertyDetails.features
+                ? response.rentalByListingId.propertyDetails.features.list
+                : [],
               status: <Apartment['status']>response.rentalByListingId.status,
               createdAt: new Date(response.rentalByListingId.createdAt),
               updatedAt: new Date(response.rentalByListingId.updatedAt),
@@ -87,7 +88,9 @@ export class StreetEasyAdapter implements ApartmentSearch, ApartmentFetch {
       streetAddress: response.buildingByRentalListingId.address.street,
       unit: response.rentalByListingId.propertyDetails.address.unit ?? '',
       unitType: response.buildingByRentalListingId.type,
-      features: response.rentalByListingId.propertyDetails.features.list,
+      features: response.rentalByListingId.propertyDetails.features
+        ? response.rentalByListingId.propertyDetails.features.list
+        : [],
       status: <Apartment['status']>response.rentalByListingId.status,
       createdAt: new Date(response.rentalByListingId.createdAt),
       updatedAt: new Date(response.rentalByListingId.updatedAt),
