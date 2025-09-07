@@ -1,15 +1,4 @@
 import * as fs from 'node:fs';
+import { Mcp } from './mcp.mjs';
 
-const currentWorkingDirectory = process.cwd();
-
-const mcp = {
-  'apartment-helper': {
-    command: 'node',
-    args: [`${currentWorkingDirectory}/dist/mcp.js`],
-    env: {
-      DATA_DIRECTORY: `${currentWorkingDirectory}/data`,
-    },
-  },
-};
-
-fs.writeFileSync('mcp.json', JSON.stringify(mcp, null, 2));
+fs.writeFileSync('mcp.json', JSON.stringify(Mcp, null, 2));
