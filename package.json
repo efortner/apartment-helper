@@ -53,6 +53,6 @@
     "@modelcontextprotocol/sdk": "^1.18.0",
     "dotenv": "^17.2.2",
     "streeteasy-api": "^0.1.11",
-    "zod": "^3.25.76"
+    "zod": "^4.1.9"
   }
 }
