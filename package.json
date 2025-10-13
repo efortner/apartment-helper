@@ -30,7 +30,7 @@
     "bundle:mcp": "tsc --noEmit && esbuild src/mcp/server.ts --outfile=dist/mcp.js --platform=node --bundle --target=node22 --format=cjs --external:fs --minify"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
+    "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^19.8.1",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.43.0",
